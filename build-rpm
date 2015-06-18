@@ -1,6 +1,10 @@
 #!/bin/bash
 
-# sudo yum -y install rpmdevtools && rpmdev-setuptree
+if [[ -d ~/rpmbuild ]]; then
+ rm -rf ~/rpmbuild
+fi
+
+sudo yum -y install rpmdevtools && rpmdev-setuptree
 
 if [[ -z "$1" ]]; then
   read -p "Version: " version
@@ -8,16 +12,13 @@ else
   version=$1
 fi
 
-wget https://raw.github.com/nmilford/rpm-etcd/master/etcd.spec -O ~/rpmbuild/SPECS/etcd.spec
+git clone https://github.com/dpeterka/rpm-etcd.git rpm-etcd
 
+cp rpm-etcd/master/etcd.spec ~/rpmbuild/SPECS/etcd.spec
+sed "s/VERSION/${version}/" ~/rpmbuild/SPECS/etcd.spec
 wget https://github.com/coreos/etcd/releases/download/v${version}/etcd-v${version}-linux-amd64.tar.gz -O ~/rpmbuild/SOURCES/etcd-v${version}-linux-amd64.tar.gz
-
-wget https://raw.github.com/nmilford/rpm-etcd/master/etcd.initd -O ~/rpmbuild/SOURCES/etcd.initd
-
-wget https://raw.github.com/nmilford/rpm-etcd/master/etcd.sysconfig -O ~/rpmbuild/SOURCES/etcd.sysconfig
-
-wget https://raw.github.com/nmilford/rpm-etcd/master/etcd.nofiles.conf -O ~/rpmbuild/SOURCES/etcd.nofiles.conf
-
-wget https://raw.github.com/nmilford/rpm-etcd/master/etcd.logrotate -O ~/rpmbuild/SOURCES/etcd.logrotate
-
+cp rpm-etcd/etcd.initd ~/rpmbuild/SOURCES/etcd.initd
+cp rpm-etcd/etcd.sysconfig ~/rpmbuild/SOURCES/etcd.sysconfig
+cp rpm-etcd/etcd.nofiles.conf ~/rpmbuild/SOURCES/etcd.nofiles.conf
+cp rpm-etcd/etcd.logrotate ~/rpmbuild/SOURCES/etcd.logrotate
 rpmbuild -bb ~/rpmbuild/SPECS/etcd.spec
