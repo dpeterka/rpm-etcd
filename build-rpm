@@ -12,7 +12,7 @@ else
   version=$1
 fi
 
-cp rpm-etcd/master/etcd.spec ~/rpmbuild/SPECS/etcd.spec
+cp rpm-etcd/etcd.spec ~/rpmbuild/SPECS/etcd.spec
 sed "s/VERSION/${version}/" ~/rpmbuild/SPECS/etcd.spec
 wget https://github.com/coreos/etcd/releases/download/v${version}/etcd-v${version}-linux-amd64.tar.gz -O ~/rpmbuild/SOURCES/etcd-v${version}-linux-amd64.tar.gz
 cp rpm-etcd/etcd.initd ~/rpmbuild/SOURCES/etcd.initd
