@@ -12,8 +12,6 @@ else
   version=$1
 fi
 
-git clone https://github.com/dpeterka/rpm-etcd.git rpm-etcd
-
 cp rpm-etcd/master/etcd.spec ~/rpmbuild/SPECS/etcd.spec
 sed "s/VERSION/${version}/" ~/rpmbuild/SPECS/etcd.spec
 wget https://github.com/coreos/etcd/releases/download/v${version}/etcd-v${version}-linux-amd64.tar.gz -O ~/rpmbuild/SOURCES/etcd-v${version}-linux-amd64.tar.gz
