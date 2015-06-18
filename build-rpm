@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 if [[ -d ~/rpmbuild ]]; then
  rm -rf ~/rpmbuild
@@ -13,7 +13,7 @@ else
 fi
 
 cp rpm-etcd/etcd.spec ~/rpmbuild/SPECS/etcd.spec
-sed "s/VERSION/${version}/" ~/rpmbuild/SPECS/etcd.spec
+sed -i ~/rpmbuild/SPECS/etcd.spec -e "s/VERSION/${version}/"
 wget https://github.com/coreos/etcd/releases/download/v${version}/etcd-v${version}-linux-amd64.tar.gz -O ~/rpmbuild/SOURCES/etcd-v${version}-linux-amd64.tar.gz
 cp rpm-etcd/etcd.initd ~/rpmbuild/SOURCES/etcd.initd
 cp rpm-etcd/etcd.sysconfig ~/rpmbuild/SOURCES/etcd.sysconfig
