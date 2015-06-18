@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# sudo yum -y install rpmdevtools && rpmdev-setuptree
+
+if [[ -z "$1" ]]; then
+  read -p "Version: " version
+else
+  version=$1
+fi
+
+wget https://raw.github.com/nmilford/rpm-etcd/master/etcd.spec -O ~/rpmbuild/SPECS/etcd.spec
+
+wget https://github.com/coreos/etcd/releases/download/v${version}/etcd-v${version}-linux-amd64.tar.gz -O ~/rpmbuild/SOURCES/etcd-v${version}-linux-amd64.tar.gz
+
+wget https://raw.github.com/nmilford/rpm-etcd/master/etcd.initd -O ~/rpmbuild/SOURCES/etcd.initd
+
+wget https://raw.github.com/nmilford/rpm-etcd/master/etcd.sysconfig -O ~/rpmbuild/SOURCES/etcd.sysconfig
+
+wget https://raw.github.com/nmilford/rpm-etcd/master/etcd.nofiles.conf -O ~/rpmbuild/SOURCES/etcd.nofiles.conf
+
+wget https://raw.github.com/nmilford/rpm-etcd/master/etcd.logrotate -O ~/rpmbuild/SOURCES/etcd.logrotate
+
+rpmbuild -bb ~/rpmbuild/SPECS/etcd.spec
